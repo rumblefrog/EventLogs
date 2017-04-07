@@ -18,7 +18,7 @@ before_script:
     - wget $SMPACKAGE
     - tar -xzf $(basename "$SMPACKAGE")
     - cp EventLogs.sp addons/sourcemod/scripting/
-    - cp include/steamtools.sp addons/sourcemod/scripting/include/
+    - cp include/steamtools.inc addons/sourcemod/scripting/include/
     - cd addons/sourcemod/scripting/
     - chmod +x spcomp
     - chmod +x compile.sh
