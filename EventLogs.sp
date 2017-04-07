@@ -51,7 +51,7 @@ void InitDB(Handle &DbHNDL)
 	if (DbHNDL == INVALID_HANDLE)
 		SetFailState(sError);
 		
-	char ChatLogSQL[] = "CREATE TABLE EventsLog_Chat ( `id` INT NOT NULL AUTO_INCREMENT , `steamid` VARCHAR(32) NOT NULL , `name` VARCHAR(64) NOT NULL , `message` TEXT NOT NULL , `time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`id`))";
+	char ChatLogSQL[] = "CREATE TABLE IF NOT EXISTS EventsLog_Chat ( `id` INT NOT NULL AUTO_INCREMENT , `steamid` VARCHAR(32) NOT NULL , `name` VARCHAR(64) NOT NULL , `message` TEXT NOT NULL , `time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`id`))";
 	
 	SQL_FastQuery(DbHNDL, ChatLogSQL, sizeof ChatLogSQL);
 }
