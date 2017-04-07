@@ -1,5 +1,5 @@
 # EventLogs [![Build Status](https://travis-ci.org/RumbleFrog/EventLogs.svg?branch=master)](https://travis-ci.org/RumbleFrog/EventLogs)
-An simple, yet extensive logging utility
+A simple, yet extensive logging utility
 
 # Convars
 
