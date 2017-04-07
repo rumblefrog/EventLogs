@@ -95,8 +95,12 @@ public void OnClientSayCommand_Post(int iClient, const char[] sCommand, const ch
 		char SteamID64[32], Client_Name[MAX_NAME_LENGTH], ChatSQL[512], Escaped_Name[256];
 		
 		GetClientAuthId(iClient, AuthId_SteamID64, SteamID64, sizeof SteamID64);
-		GetClientName(iClient, Client_Name, sizeof Client_Name);
 		
+		if (StrEqual(SteamID64, "STEAM_ID_STOP_IGNORING_RETVALS"))
+			return;
+		
+		GetClientName(iClient, Client_Name, sizeof Client_Name);
+				
 		SQL_EscapeString(hDB, Client_Name, Escaped_Name, sizeof Escaped_Name);
 		Format(ChatSQL, sizeof ChatSQL, "INSERT INTO EventLogs_Chat (`host`, `steamid`, `name`, `message`) VALUES ('%s', '%s', '%s', '%s')", g_IP, SteamID64, Escaped_Name, sArgs);
 		
