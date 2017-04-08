@@ -1,7 +1,7 @@
 #pragma semicolon 1
 
 #define PLUGIN_AUTHOR "Fishy"
-#define PLUGIN_VERSION "1.0.60"
+#define PLUGIN_VERSION "1.0.61"
 
 #include <sourcemod>
 #include <steamtools>
@@ -69,7 +69,7 @@ public void OnPluginStart()
 	HookConVarChange(cvarChatLogEnabled, OnConvarChange);
 	HookConVarChange(cvarPluginLogEnabled, OnConvarChange);
 	
-	AutoExecConfig(true, "eventlogs.cfg");
+	AutoExecConfig(true, "eventlogs");
 	
 	if (!g_bSteamTools || !Steam_IsConnected())
 	{
