@@ -16,6 +16,10 @@ A simple, yet extensive logging utility
 
 - [SteamTools Extension](https://builds.limetech.io/?p=steamtools)
 
+# Native
+
+- [Include File](https://github.com/RumbleFrog/EventLogs/blob/master/include/EventLogs.inc)
+
 # Download 
 
 Download the latest version from the [release](https://github.com/RumbleFrog/EventLogs/releases) page
