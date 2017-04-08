@@ -1,10 +1,11 @@
 #pragma semicolon 1
 
 #define PLUGIN_AUTHOR "Fishy"
-#define PLUGIN_VERSION "1.0.59"
+#define PLUGIN_VERSION "1.0.60"
 
 #include <sourcemod>
 #include <steamtools>
+#include <EventLogs>
 
 #pragma newdecls required
 
@@ -20,16 +21,6 @@ bool g_bPluginLogEnabled;
 Database hDB;
 char g_IP[64];
 bool g_bSteamTools;
-
-enum LogLevel
-{
-	LOG_TRACE,
-	LOG_DEBUG,
-	LOG_INFO,
-	LOG_WARN,
-	LOG_ERROR,
-	LOG_FATAL
-}
 
 public Plugin myinfo = 
 {
@@ -111,7 +102,7 @@ public void OnClientSayCommand_Post(int iClient, const char[] sCommand, const ch
 public void OnRowInsert(Handle owner, Handle hndl, const char[] error, any data)
 {
 	if (hndl == INVALID_HANDLE)
-		LogError("Unable to insert row: %s", error);
+		EL_LogPlugin(LOG_ERROR, "Unable to insert row: %s", error);
 }
 
 public void OnConvarChange(ConVar convar, const char[] oldValue, const char[] newValue)
@@ -140,11 +131,12 @@ public int NativeLogPlugin(Handle plugin, int numParams)
 {
 	if (!g_bPluginLogEnabled)
 		return false;
-		
+	
+	int written;
 	char sMessage[1024], Plugin_Name[255], PluginSQL[512], Level[16];
 	
 	SQLGetLogLevel(GetNativeCell(1), Level, sizeof Level);
-	GetNativeString(1, sMessage, sizeof sMessage);
+	FormatNativeString(0, 2, 3, sizeof sMessage, written, sMessage);
 	GetPluginInfo(plugin, PlInfo_Name, Plugin_Name, sizeof Plugin_Name);
 	
 	SQL_EscapeString(hDB, Plugin_Name, Plugin_Name, sizeof Plugin_Name);

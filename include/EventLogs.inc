@@ -18,10 +18,11 @@ enum LogLevel
 * Logs plugin message
 * 
 * @param level			Logging level
-* @param message		Message
+* @param format			Format
+* @param ...			Any additional formating data
 * @return				True or false, if request is made
 */
-native bool EL_LogPlugin(LogLevel Level, const char[] message);
+native bool EL_LogPlugin(LogLevel level, const char[] format, any ...);
 
 
 public SharedPlugin __pl_EventLogs =
