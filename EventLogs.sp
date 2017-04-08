@@ -1,7 +1,7 @@
 #pragma semicolon 1
 
 #define PLUGIN_AUTHOR "Fishy"
-#define PLUGIN_VERSION "1.0.61"
+#define PLUGIN_VERSION "1.0.62"
 
 #include <sourcemod>
 #include <steamtools>
@@ -53,7 +53,10 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 public void OnTableCreate(Handle owner, Handle hndl, const char[] error, any data)
 {
 	if (hndl == INVALID_HANDLE)
+	{
+		EL_LogPlugin(LOG_FATAL, "Unable to create table: %s", error);
 		SetFailState("Unable to create table: %s", error);
+	}
 }
 
 public void OnPluginStart()
@@ -83,7 +86,7 @@ public void OnClientSayCommand_Post(int iClient, const char[] sCommand, const ch
 {
 	if (g_bChatLogEnabled && Client_IsValid(iClient))
 	{
-		char SteamID64[32], Client_Name[MAX_NAME_LENGTH], ChatSQL[512], Escaped_Name[256];
+		char SteamID64[32], Client_Name[MAX_NAME_LENGTH], ChatSQL[512], Escaped_Name[256], Escaped_MSG[1024];
 		
 		GetClientAuthId(iClient, AuthId_SteamID64, SteamID64, sizeof SteamID64);
 		
@@ -91,9 +94,10 @@ public void OnClientSayCommand_Post(int iClient, const char[] sCommand, const ch
 			return;
 		
 		GetClientName(iClient, Client_Name, sizeof Client_Name);
-				
+			
 		SQL_EscapeString(hDB, Client_Name, Escaped_Name, sizeof Escaped_Name);
-		Format(ChatSQL, sizeof ChatSQL, "INSERT INTO EventLogs_Chat (`host`, `steamid`, `name`, `message`) VALUES ('%s', '%s', '%s', '%s')", g_IP, SteamID64, Escaped_Name, sArgs);
+		SQL_EscapeString(hDB, sArgs, Escaped_MSG, sizeof Escaped_MSG);
+		Format(ChatSQL, sizeof ChatSQL, "INSERT INTO EventLogs_Chat (`host`, `steamid`, `name`, `message`) VALUES ('%s', '%s', '%s', '%s')", g_IP, SteamID64, Escaped_Name, Escaped_MSG);
 		
 		SQL_TQuery(hDB, OnRowInsert, ChatSQL);
 	}
@@ -133,16 +137,16 @@ public int NativeLogPlugin(Handle plugin, int numParams)
 		return false;
 	
 	int written;
-	char sMessage[1024], Plugin_Name[255], PluginSQL[512], Level[16];
+	char sMessage[1024], Plugin_Name[255], PluginSQL[512], Level[16], Escaped_Name[512], Escaped_Message[2049];
 	
 	SQLGetLogLevel(GetNativeCell(1), Level, sizeof Level);
 	FormatNativeString(0, 2, 3, sizeof sMessage, written, sMessage);
 	GetPluginInfo(plugin, PlInfo_Name, Plugin_Name, sizeof Plugin_Name);
 	
-	SQL_EscapeString(hDB, Plugin_Name, Plugin_Name, sizeof Plugin_Name);
-	SQL_EscapeString(hDB, sMessage, sMessage, sizeof sMessage);
+	SQL_EscapeString(hDB, Plugin_Name, Escaped_Name, sizeof Escaped_Name);
+	SQL_EscapeString(hDB, sMessage, Escaped_Message, sizeof Escaped_Message);
 	
-	Format(PluginSQL, sizeof PluginSQL, "INSERT INTO EventLogs_Plugin (`host`, `name`, `level`, `message`) VALUES ('%s', '%s', '%s', '%s')", g_IP, Plugin_Name, Level, sMessage);
+	Format(PluginSQL, sizeof PluginSQL, "INSERT INTO EventLogs_Plugin (`host`, `name`, `level`, `message`) VALUES ('%s', '%s', '%s', '%s')", g_IP, Escaped_Name, Level, Escaped_Message);
 	
 	SQL_TQuery(hDB, OnRowInsert, PluginSQL);
 	
