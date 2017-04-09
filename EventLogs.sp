@@ -25,7 +25,7 @@ SOFTWARE.
 #pragma semicolon 1
 
 #define PLUGIN_AUTHOR "Fishy"
-#define PLUGIN_VERSION "1.0.62"
+#define PLUGIN_VERSION "1.0.63"
 
 #include <sourcemod>
 #include <steamtools>
@@ -62,8 +62,8 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 	if (hDB == INVALID_HANDLE)
 		return APLRes_Failure;
 		
-	char ChatLogSQL[] = "CREATE TABLE IF NOT EXISTS EventLogs_Chat ( `id` INT NOT NULL AUTO_INCREMENT , `host` VARCHAR(64) NOT NULL , `steamid` VARCHAR(32) NOT NULL , `name` VARCHAR(64) NOT NULL , `message` TEXT NOT NULL , `time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`id`))";
-	char PluginLogSQL[] = "CREATE TABLE IF NOT EXISTS EventLogs_Plugin ( `id` INT NOT NULL AUTO_INCREMENT , `host` VARCHAR(64) NOT NULL , `name` VARCHAR(255) NOT NULL , `level` ENUM('trace','debug','info','warn','error','fatal') NOT NULL DEFAULT 'info' , `message` LONGTEXT NOT NULL , `time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`id`))";
+	char ChatLogSQL[] = "CREATE TABLE IF NOT EXISTS EventLogs_Chat ( `id` INT NOT NULL AUTO_INCREMENT , `host` VARCHAR(64) NOT NULL , `steamid` VARCHAR(32) NOT NULL , `name` VARCHAR(64) NOT NULL , `message` TEXT NOT NULL , `time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`id`)) DEFAULT CHARSET=utf8";
+	char PluginLogSQL[] = "CREATE TABLE IF NOT EXISTS EventLogs_Plugin ( `id` INT NOT NULL AUTO_INCREMENT , `host` VARCHAR(64) NOT NULL , `name` VARCHAR(255) NOT NULL , `level` ENUM('trace','debug','info','warn','error','fatal') NOT NULL DEFAULT 'info' , `message` LONGTEXT NOT NULL , `time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`id`)) DEFAULT CHARSET=utf8";
 	
 	SQL_SetCharset(hDB, "utf8");
 	SQL_TQuery(hDB, OnTableCreate, ChatLogSQL);
