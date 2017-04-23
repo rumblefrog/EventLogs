@@ -20,9 +20,9 @@ enum LogLevel
 * @param level			Logging level
 * @param format			Format
 * @param ...			Any additional formating data
-* @return				True or false, if request is made
+* @return				Last inserted ID, returns -1 if none
 */
-native bool EL_LogPlugin(LogLevel level, const char[] format, any ...);
+native int EL_LogPlugin(LogLevel level, const char[] format, any ...);
 
 
 public SharedPlugin __pl_EventLogs =

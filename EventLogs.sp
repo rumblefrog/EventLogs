@@ -25,7 +25,7 @@ SOFTWARE.
 #pragma semicolon 1
 
 #define PLUGIN_AUTHOR "Fishy"
-#define PLUGIN_VERSION "1.0.63"
+#define PLUGIN_VERSION "1.0.64"
 
 #include <sourcemod>
 #include <steamtools>
@@ -45,6 +45,7 @@ bool g_bPluginLogEnabled;
 Database hDB;
 char g_IP[64];
 bool g_bSteamTools;
+int RID = -1;
 
 public Plugin myinfo = 
 {
@@ -171,10 +172,21 @@ public int NativeLogPlugin(Handle plugin, int numParams)
 	SQL_EscapeString(hDB, sMessage, Escaped_Message, sizeof Escaped_Message);
 	
 	Format(PluginSQL, sizeof PluginSQL, "INSERT INTO EventLogs_Plugin (`host`, `name`, `level`, `message`) VALUES ('%s', '%s', '%s', '%s')", g_IP, Escaped_Name, Level, Escaped_Message);
-	
+		
 	SQL_TQuery(hDB, OnRowInsert, PluginSQL);
 	
-	return true;
+	return RID;
+}
+
+public void OnPluginLog(Handle owner, Handle hndl, const char[] error, any data)
+{
+	if (hndl == INVALID_HANDLE)
+	{
+		EL_LogPlugin(LOG_ERROR, "Unable to insert row: %s", error);
+		return;
+	}
+	
+	RID = SQL_GetInsertId(hndl);
 }
 
 void SQLGetLogLevel(int Level, char[] buffer, int buffer_size)
