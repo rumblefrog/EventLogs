@@ -25,7 +25,7 @@ SOFTWARE.
 #pragma semicolon 1
 
 #define PLUGIN_AUTHOR "Fishy"
-#define PLUGIN_VERSION "1.0.64"
+#define PLUGIN_VERSION "1.0.65"
 
 #include <sourcemod>
 #include <steamtools>
@@ -173,7 +173,7 @@ public int NativeLogPlugin(Handle plugin, int numParams)
 	
 	Format(PluginSQL, sizeof PluginSQL, "INSERT INTO EventLogs_Plugin (`host`, `name`, `level`, `message`) VALUES ('%s', '%s', '%s', '%s')", g_IP, Escaped_Name, Level, Escaped_Message);
 		
-	SQL_TQuery(hDB, OnRowInsert, PluginSQL);
+	SQL_TQuery(hDB, OnPluginLog, PluginSQL);
 	
 	return RID;
 }
