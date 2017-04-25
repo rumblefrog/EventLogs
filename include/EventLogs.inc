@@ -20,7 +20,7 @@ enum LogLevel
 * @param level			Logging level
 * @param format			Format
 * @param ...			Any additional formating data
-* @return				Last inserted ID, returns -1 if none
+* @return				Last inserted ID (Not Accurate), returns -1 if none
 */
 native int EL_LogPlugin(LogLevel level, const char[] format, any ...);
 
