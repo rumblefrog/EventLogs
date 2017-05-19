@@ -25,11 +25,12 @@ SOFTWARE.
 #pragma semicolon 1
 
 #define PLUGIN_AUTHOR "Fishy"
-#define PLUGIN_VERSION "1.0.65"
+#define PLUGIN_VERSION "1.0.66"
 
 #include <sourcemod>
-#include <steamtools>
 #include <EventLogs>
+#undef REQUIRE_EXTENSIONS
+#include <steamtools>
 
 #pragma newdecls required
 
